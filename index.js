@@ -3,14 +3,15 @@ const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 
+// Import Routes
+const testRoute = require('./api/routes/test');
+
+// Use Modules
+app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const testRoute = require('./api/routes/test');
-
-app.use(morgan('dev'));
-
-// Routes
+// Use Routes
 app.use('/test', testRoute);
 
 // Catch error if not part of routes above
