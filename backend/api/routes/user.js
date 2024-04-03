@@ -18,14 +18,16 @@ router.get('/:id', (req, res) => {
 });
 
 // UPDATE
-router.patch('/', (req, res) => {
+router.patch('/:id', (req, res) => {
+  const id = req.params.id
   res.status(200).json({
-    request: req.method
+    request: req.method,
+    id : id
   });
 });
 
 // DELETE
-router.delete('/', (req, res) => {
+router.delete('/:id', (req, res) => {
   res.status(200).json({
     request: req.method
   });

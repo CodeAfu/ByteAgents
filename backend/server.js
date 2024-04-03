@@ -4,16 +4,17 @@ const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 
-// Express App
-const app = express();
-
 // Import Routes
 const testRoute = require('./api/routes/test');
 const userRoute = require('./api/routes/user')
 const courseRoute = require('./api/routes/course')
 const walletRoute = require('./api/routes/wallet')
 
+// Express App
+const app = express();
+
 // Use Modules
+app.use(express.json());
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
