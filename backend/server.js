@@ -1,8 +1,9 @@
 require('dotenv').config()
 
 const express = require('express');
+const mongoose = require('mongoose');
 const morgan = require('morgan');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 
 // Import Routes
 const testRoute = require('./api/routes/test');
@@ -16,8 +17,8 @@ const app = express();
 // Use Modules
 app.use(express.json());
 app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json());
 
 // Append headers to prevent CORS errors
 app.use((req, res, next) => {
@@ -52,8 +53,20 @@ app.use((error, req, res, next) => {
   });  
 });
 
-app.listen(process.env.PORT, () => {
-    console.log(`Link: http://127.0.0.1:${process.env.PORT}`)
-});
+// DB Connect
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
+    // Listen for requests
+    app.listen(process.env.PORT, () => {
+      console.log(`DB connection succesful. http://127.0.0.1:${process.env.PORT}`)
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+
+
+
 
 
