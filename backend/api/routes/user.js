@@ -1,43 +1,21 @@
 const express = require('express')
 const router = express.Router();
+const {
+  getUsers,
+  getUser,
+  createUser,
+  deleteUser,
+  updateUser,
+  addCourse,
+  removeCourse,
+} = require('../controllers/userController');
 
-// GET all
-router.get('/', (req, res) => {
-  res.status(200).json({
-    request: req.method
-  });
-});
-
-// GET one
-router.get('/:id', (req, res) => {
-  const id = req.params.id
-  res.status(200).json({
-    request: req.method,
-    id : id
-  });
-});
-
-// UPDATE
-router.patch('/:id', (req, res) => {
-  const id = req.params.id
-  res.status(200).json({
-    request: req.method,
-    id : id
-  });
-});
-
-// DELETE
-router.delete('/:id', (req, res) => {
-  res.status(200).json({
-    request: req.method
-  });
-});
-
-// POST
-router.post('/', (req, res) => {
-  res.status(200).json({
-    request: req.method
-  });
-});
+router.get('/', getUsers); // GET ALL 
+router.get('/:id', getUser); // GET
+router.post('/', createUser); // POST
+router.delete('/:id', deleteUser); // DELETE
+router.patch('/:id', updateUser); // PATCH
+router.post('/:id/addCourse', addCourse); // DELETE
+router.delete('/:id/removeCourse', removeCourse); // PATCH
 
 module.exports = router;

@@ -9,6 +9,7 @@ const morgan = require('morgan');
 const testRoute = require('./api/routes/test');
 const userRoute = require('./api/routes/user')
 const courseRoute = require('./api/routes/course')
+const lessonRoute = require('./api/routes/lesson')
 const walletRoute = require('./api/routes/wallet')
 
 // Express App
@@ -35,6 +36,7 @@ app.use((req, res, next) => {
 app.use('/api/test', testRoute);
 app.use('/api/user', userRoute);
 app.use('/api/course', courseRoute);
+app.use('/api/course/lesson', lessonRoute);
 app.use('/api/wallet', walletRoute);
 
 // Catch error if not part of routes above
@@ -64,9 +66,4 @@ mongoose.connect(process.env.MONGO_URI)
   .catch((err) => {
     console.log(err);
   });
-
-
-
-
-
 
