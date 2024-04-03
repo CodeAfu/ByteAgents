@@ -13,8 +13,8 @@ router.post('/', (req, res, next) => {
         name: req.body.name,
         price: req.body.price
     };
-    res.status(200).json({
-        request: "POST",
+    res.status(201).json({
+        request: "POST:",
         createdObject: object
     });
 });
