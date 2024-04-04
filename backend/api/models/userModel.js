@@ -28,6 +28,6 @@ const userSchema = new Schema({
     type: [{ type: Schema.Types.ObjectId, ref: 'Course' }],
     required: false
   }
-}, { timestamps: true });
+});
 
 module.exports = mongoose.model('User', userSchema);

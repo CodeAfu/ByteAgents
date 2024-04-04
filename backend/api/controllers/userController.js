@@ -51,10 +51,6 @@ const createUser = async (req, res) => {
     emptyFields.push('password')
   }
 
-  if (!coursesEnrolled) {
-    emptyFields.push('coursesEnrolled')
-  }
-
   if (emptyFields.length > 0) {
     return res.status(400).json({ error: 'Please fill in all the fields', emptyFields })
   }
@@ -134,7 +130,6 @@ const addCourse = async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-
 }
 
 const removeCourse = async (req, res) => {
