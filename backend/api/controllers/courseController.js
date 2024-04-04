@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const Course = require('../models/courseModel')
+const Course = require('../models/courseModel');
+const Module = require('../models/moduleModel');
 
 // GET
 const getCourses = async (req, res) => {
@@ -78,7 +79,6 @@ const updateCourse = async (req, res) => {
 
 const getModules = async (req, res) => {
   const { id } = req.params;
-  const { moduleId } = req.body;
   const errorMessage = `Module does not exist: ${id}`;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -86,7 +86,7 @@ const getModules = async (req, res) => {
   }
 
   try {
-    const course = await Course.findById(id);
+    const course = await Course.findById(id).populate('modules');
 
     if (!course) {
       return res.status(404).json({ error: "Course does not exist" });
@@ -103,7 +103,7 @@ const getModules = async (req, res) => {
 
 const addModule = async (req, res) => {
   const { id } = req.params;
-  const { moduleId } = req.body;
+  const { id: moduleId } = req.body;
   const errorMessage = `Course does not exist`;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -118,10 +118,14 @@ const addModule = async (req, res) => {
     }
 
     // Check if already enrolled
-    const module = course.module.findById(moduleId);
+    const module = await Module.findById(moduleId);
     if (!module) {
       return res.status(404).json({ error: `Module does not exist: ${moduleId}` });
     }
+
+    if (course.modules.includes(moduleId)) {
+      return res.status(400).json({ error: `Module already exists: ${moduleId}` })
+    }    
 
     course.modules.push(moduleId);
 
@@ -134,9 +138,9 @@ const addModule = async (req, res) => {
 
 const removeModule = async (req, res) => {
   const { id } = req.params;
-  const { moduleId } = req.body;
-  const errorMessage = `Module does not exist: ${id}`;
-  
+  const { id: moduleId } = req.body;
+  const errorMessage = `Could not remove module from course: ${id}`;
+
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ error: errorMessage });
   }
@@ -148,18 +152,19 @@ const removeModule = async (req, res) => {
       return res.status(404).json({ error: errorMessage });
     }
 
-    // Check if enrolled
-    const index = course.modules.indexOf(courseId);
+    const index = course.modules.indexOf(moduleId);
     if (index === -1) {
-      return res.status(400).json({ error: errorMessage });
+      return res.status(404).json({ error: `Module does not exist in course: ${moduleId}` });
     }
 
+    // Remove the module from the course's modules array
     course.modules.splice(index, 1);
     await course.save();
 
-    res.status(200).json(course);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    return res.status(200).json({ message: "Module removed from course successfully" });
+
+  } catch(error) {
+    res.status(500).json({ error: error.message });
   }
 }
 

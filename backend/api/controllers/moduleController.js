@@ -27,10 +27,10 @@ const getModule = async (req, res) => {
 
 // CREATE
 const createModule = async (req, res) => {
-  const { topic, contents } = req.body;
+  const { title, description, moduleNumber, timeToComplete, contents } = req.body;
 
   try {
-    const lesson = await Lesson.create({ topic, contents });
+    const lesson = await Lesson.create({ title, description, moduleNumber, timeToComplete, contents });
     res.status(201).json(lesson);
   } catch (error) {
     res.status(400).json({ error: error.message });
