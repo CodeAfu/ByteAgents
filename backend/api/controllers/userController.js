@@ -29,6 +29,36 @@ const getUser = async (req, res) => {
 const createUser = async (req, res) => {
   const { name, role, username, email, password, coursesEnrolled } = req.body;
 
+  let emptyFields = [];
+
+  if (!name) {
+    emptyFields.push('name')
+  }
+
+  if (!role) {
+    emptyFields.push('role')
+  }
+
+  if (!username) {
+    emptyFields.push('username')
+  }
+
+  if (!email) {
+    emptyFields.push('email')
+  }
+
+  if (!password) {
+    emptyFields.push('password')
+  }
+
+  if (!coursesEnrolled) {
+    emptyFields.push('coursesEnrolled')
+  }
+
+  if (emptyFields.length > 0) {
+    return res.status(400).json({ error: 'Please fill in all the fields', emptyFields })
+  }
+
   try {
     const user = await User.create({ name, role, username, email, password, coursesEnrolled });
     res.status(201).json(user);
