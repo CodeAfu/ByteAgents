@@ -28,10 +28,10 @@ const getCourse = async (req, res) => {
 
 // CREATE
 const createCourse = async (req, res) => {
-  const { name, details, duration, skills, studentTotal, studentCurrent, modules } = req.body;
+  const { name, details, price, duration, skills, studentTotal, studentCurrent, modules } = req.body;
 
   try {
-    const course = await Course.create({ name, details, duration, skills, studentTotal, studentCurrent, modules });
+    const course = await Course.create({ name, details, duration, price, skills, studentTotal, studentCurrent, modules });
     res.status(201).json(course);
   } catch (error) {
     res.status(400).json({ error: error.message });
