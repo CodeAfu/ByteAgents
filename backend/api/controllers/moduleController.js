@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
-const Lesson = require('../models/lessonModel')
+const Lesson = require('../models/moduleModel')
 
 // GET
-const getLessons = async (req, res) => {
+const getModules = async (req, res) => {
   const lessons = await Lesson.find({}).sort({createdAt: -1});
   res.status(200).json(lessons)
 }
 
 // // GET single
-const getLesson = async (req, res) => {
+const getModule = async (req, res) => {
   const { id } = req.params;
   const errorMessage = `Lesson does not exist: ${id}`;
 
@@ -26,11 +26,11 @@ const getLesson = async (req, res) => {
 }
 
 // CREATE
-const createLesson = async (req, res) => {
-  const { name, email, password } = req.body;
+const createModule = async (req, res) => {
+  const { topic, contents } = req.body;
 
   try {
-    const lesson = await Lesson.create({ name, email, password });
+    const lesson = await Lesson.create({ topic, contents });
     res.status(201).json(lesson);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -38,9 +38,9 @@ const createLesson = async (req, res) => {
 }
 
 // DELETE
-const deleteLesson = async (req, res) => {
+const deleteModule = async (req, res) => {
   const { id } = req.params;
-  const errorMessage = `Lesson does not exist: ${id}`;
+  const errorMessage = `Module does not exist: ${id}`;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({error: errorMessage});
@@ -57,9 +57,9 @@ const deleteLesson = async (req, res) => {
 
 
 // UPDATE
-const updateLesson = async (req, res) => {
+const updateModule = async (req, res) => {
   const { id } = req.params;
-  const errorMessage = `Lesson does not exist: ${id}`;
+  const errorMessage = `Module does not exist: ${id}`;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({error: errorMessage});
@@ -77,9 +77,9 @@ const updateLesson = async (req, res) => {
 }
 
 module.exports = {
-  getLessons,
-  getLesson,
-  createLesson,
-  deleteLesson,
-  updateLesson
+  getModules,
+  getModule,
+  createModule,
+  deleteModule,
+  updateModule
 }

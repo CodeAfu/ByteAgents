@@ -3,7 +3,7 @@ const Course = require('../models/courseModel')
 
 // GET
 const getCourses = async (req, res) => {
-  const courses = await Course.find({}).sort({createdAt: -1});
+  const courses = await Course.find({}).populate('modules').sort({createdAt: -1});
   res.status(200).json(courses)
 }
 
@@ -16,7 +16,7 @@ const getCourse = async (req, res) => {
     return res.status(404).json({ error: errorMessage})
   }
 
-  const course = await Course.findById(id);
+  const course = await Course.findById(id).populate('modules');
 
   if (!course) {
     return res.status(404).json({ error: errorMessage })
@@ -27,10 +27,10 @@ const getCourse = async (req, res) => {
 
 // CREATE
 const createCourse = async (req, res) => {
-  const { name, details, lessons, progress } = req.body;
+  const { name, details, duration, skills, studentTotal, studentCurrent, modules } = req.body;
 
   try {
-    const course = await Course.create({ name, details, lessons, progress });
+    const course = await Course.create({ name, details, duration, skills, studentTotal, studentCurrent, modules });
     res.status(201).json(course);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -76,10 +76,100 @@ const updateCourse = async (req, res) => {
   res.status(200).json(course);
 }
 
+const getModules = async (req, res) => {
+  const { id } = req.params;
+  const { moduleId } = req.body;
+  const errorMessage = `Module does not exist: ${id}`;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: "Course does not exist" });
+  }
+
+  try {
+    const course = await Course.findById(id);
+
+    if (!course) {
+      return res.status(404).json({ error: "Course does not exist" });
+    }
+
+    const modules = course.modules;
+
+    res.status(200).json({ modules });
+
+  } catch(error) {
+    res.status(500).json({ error: err.message });
+  }
+}
+
+const addModule = async (req, res) => {
+  const { id } = req.params;
+  const { moduleId } = req.body;
+  const errorMessage = `Course does not exist`;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: errorMessage });
+  }
+
+  try {
+    const course = await Course.findById(id);
+
+    if (!course) {
+      return res.status(404).json({ error: errorMessage });
+    }
+
+    // Check if already enrolled
+    const module = course.module.findById(moduleId);
+    if (!module) {
+      return res.status(404).json({ error: `Module does not exist: ${moduleId}` });
+    }
+
+    course.modules.push(moduleId);
+
+    await course.save();
+    res.status(200).json(course);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
+
+const removeModule = async (req, res) => {
+  const { id } = req.params;
+  const { moduleId } = req.body;
+  const errorMessage = `Module does not exist: ${id}`;
+  
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: errorMessage });
+  }
+
+  try {
+    const course = await Course.findById(id);
+
+    if (!course) {
+      return res.status(404).json({ error: errorMessage });
+    }
+
+    // Check if enrolled
+    const index = course.modules.indexOf(courseId);
+    if (index === -1) {
+      return res.status(400).json({ error: errorMessage });
+    }
+
+    course.modules.splice(index, 1);
+    await course.save();
+
+    res.status(200).json(course);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
+
 module.exports = {
   getCourses,
   getCourse,
   createCourse,
   deleteCourse,
-  updateCourse
+  updateCourse,
+  getModules,
+  addModule,
+  removeModule
 }
