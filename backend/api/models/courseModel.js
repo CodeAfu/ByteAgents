@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
-const Module = require('./moduleModel');
 
 const courseSchema = new Schema({
   name: String,
@@ -15,6 +14,10 @@ const courseSchema = new Schema({
     type: [{ type: Schema.Types.ObjectId, ref: 'Module' }],
     required: false
   },
+  imageUrl: {
+    type: String,
+    required: false
+  }
 });
 
 module.exports = mongoose.model('Course', courseSchema);
