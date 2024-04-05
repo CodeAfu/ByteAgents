@@ -7,10 +7,11 @@ const morgan = require('morgan');
 
 // Import Routes
 const testRoute = require('./api/routes/test');
-const userRoute = require('./api/routes/user')
-const courseRoute = require('./api/routes/course')
-const moduleRoute = require('./api/routes/module')
-const walletRoute = require('./api/routes/wallet')
+const userRoute = require('./api/routes/user');
+const courseRoute = require('./api/routes/course');
+const moduleRoute = require('./api/routes/module');
+const walletRoute = require('./api/routes/wallet');
+const cryptoRoute = require('./api/routes/cmc');
 
 // Express App
 const app = express();
@@ -38,6 +39,7 @@ app.use('/api/user', userRoute);
 app.use('/api/course', courseRoute);
 app.use('/api/module', moduleRoute);
 app.use('/api/wallet', walletRoute);
+app.use('/api/crypto', cryptoRoute);
 
 // Catch error if not part of routes above
 app.use((req, res, next) => {
