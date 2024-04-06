@@ -13,6 +13,7 @@ const moduleRoute = require('./api/routes/module');
 const walletRoute = require('./api/routes/wallet');
 const cmcRoute = require('./api/routes/cmc');
 const binanceRoute = require('./api/routes/binance');
+const coursePackageRoute = require('./api/routes/coursePackage');
 
 // Express App
 const app = express();
@@ -42,6 +43,7 @@ app.use('/api/module', moduleRoute);
 app.use('/api/wallet', walletRoute);
 app.use('/api/cmc', cmcRoute);
 app.use('/api/binance', binanceRoute);
+app.use('/api/package', coursePackageRoute);
 
 // Catch error if not part of routes above
 app.use((req, res, next) => {

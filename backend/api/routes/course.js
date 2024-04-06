@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router();
 const {
   getCourses,
+  getCoursesPacked,
   getCourse,
   createCourse,
   deleteCourse,
@@ -12,6 +13,7 @@ const {
 } = require('../controllers/courseController');
 
 router.get('/', getCourses); // GET ALL 
+router.get('/packed', getCoursesPacked); // GET ALL 
 router.get('/:id', getCourse); // GET
 router.post('/', createCourse); // POST
 router.delete('/:id', deleteCourse); // DELETE

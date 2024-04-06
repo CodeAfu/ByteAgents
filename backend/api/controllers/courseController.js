@@ -8,6 +8,11 @@ const getCourses = async (req, res) => {
   res.status(200).json(courses)
 }
 
+const getCoursesPacked = async (req, res) => {
+  const courses = await Course.find({}).sort({createdAt: -1});
+  res.status(200).json(courses)
+}
+
 // // GET single
 const getCourse = async (req, res) => {
   const { id } = req.params;
@@ -170,6 +175,7 @@ const removeModule = async (req, res) => {
 
 module.exports = {
   getCourses,
+  getCoursesPacked,
   getCourse,
   createCourse,
   deleteCourse,
