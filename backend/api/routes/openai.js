@@ -1,12 +1,11 @@
 require('dotenv').config();
 const express = require('express');
-const axios = require('axios');
 const router = express.Router();
 
 const { 
+  getResponse
 } = require('../controllers/openaiController');
 
-
-router.get('/', getLatestListings);
+router.post('/', getResponse);
 
 module.exports = router;

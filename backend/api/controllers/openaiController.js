@@ -1,20 +1,24 @@
 require('dotenv').config();
-const { Configuration, OpenAIApi } = require('openai');
+const { OpenAI } = require('openai');
 
-const config = new Configuration({
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_APIKEY
 });
 
-const openai = new OpenAIApi(config);
+const getResponse = async (req, res) => {
 
-
-const runPrompt = async (req, res) => {
-  const prompt = req.body.prompt;
-
-  const response =  await openai.createCompletion({
+  const response = await openai.chat.completions.create({
     model: 'gpt-3.5-turbo',
-    prompt: prompt,
-    maxTokens: 2048,
-    
-  })
+    messages: [{
+      "role": "user", 
+      "content": req.body.content,
+    }],
+    max_tokens: 100
+  });
+  const message = response.choice[0];
+  res.status(200).json({ message });
+};
+
+module.exports = {
+  getResponse,
 }
