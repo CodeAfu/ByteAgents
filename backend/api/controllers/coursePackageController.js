@@ -27,10 +27,10 @@ const getPackage = async (req, res) => {
 
 // CREATE
 const createPackage = async (req, res) => {
-  const { name, courses, imageUrl } = req.body;
+  const { name, price, token, imageUrl } = req.body;
 
   try {
-  const course = await Package.create({ name, courses, imageUrl });
+  const course = await Package.create({ name, price, token, imageUrl });
     res.status(201).json(course);
   } catch (error) {
     res.status(400).json({ error: error.message });

@@ -4,11 +4,9 @@ const Schema = mongoose.Schema;
 
 const coursePackageSchema = new Schema({
   name: String,
-  courses: [{ type: Schema.Types.ObjectId, ref: "Course" }],
-  imageUrl: {
-    type: String,
-    required: false
-  }
+  price: String,
+  token: Number,
+  imageUrl: String
 });
 
 module.exports = mongoose.model('Package', coursePackageSchema);
