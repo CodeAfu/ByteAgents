@@ -6,7 +6,6 @@ const logger = new Console({ stdout: process.stdout, stderr: process.stderr });
 const apiKey = '';
 const client = new Spot(apiKey, '');
 
-
 const getHistoricalTrades = async (req, res) => {
   const crypto = req.params.crypto;
   try {
@@ -15,7 +14,6 @@ const getHistoricalTrades = async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: error.messsage });
   }
-  
 }
 
 const websocketConnect = async (req, res) => {
