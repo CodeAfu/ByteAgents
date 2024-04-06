@@ -12,7 +12,7 @@ const getHistoricalTrades = async (req, res) => {
     const response = await client.historicalTrades(crypto);
     res.status(200).json({ response: response.data });
   } catch (err) {
-    res.status(500).json({ error: error.messsage });
+    res.status(500).json({ error: err.messsage });
   }
 }
 
@@ -22,7 +22,7 @@ const getAggTrades = async (req, res) => {
     const response = await client.aggTrades(crypto);
     res.status(200).json({ response: response.data });
   } catch (err) {
-    res.status(500).json({ error: error.messsage });
+    res.status(500).json({ error: err.messsage });
   }
 }
 
@@ -32,7 +32,7 @@ const getAvgPrice = async (req, res) => {
     const response = await client.avgPrice(crypto);
     res.status(200).json({ response: response.data });
   } catch (err) {
-    res.status(500).json({ error: error.messsage });
+    res.status(500).json({ error: err.messsage });
   }
 }
 
@@ -42,7 +42,27 @@ const getExchangeInfo = async (req, res) => {
     const response = await client.historicalTrades(crypto);
     res.status(200).json({ response: response.data });
   } catch (err) {
-    res.status(500).json({ error: error.messsage });
+    res.status(500).json({ error: err.messsage });
+  }
+}
+
+const getDepth = async (req, res) => {
+  const crypto = req.params.crypto;
+  try {
+    const response = await client.depth(crypto);
+    res.status(200).json({ response: response.data });
+  } catch (err) {
+    res.status(500).json({ error: err.messsage });
+  }
+}
+
+const getTrades = async (req, res) => {
+  const crypto = req.params.crypto;
+  try {
+    const response = await client.depth(crypto);
+    res.status(200).json({ response: response.data });
+  } catch (err) {
+    res.status(500).json({ error: err.messsage });
   }
 }
 
@@ -63,9 +83,11 @@ const websocketConnect = async (req, res) => {
 }
 
 module.exports = {
-  websocketConnect,
   getHistoricalTrades,
   getAggTrades,
   getAvgPrice,
   getExchangeInfo,
+  getDepth,
+  websocketConnect,
+  getTrades,
 }
