@@ -9,7 +9,7 @@ const client = new Spot(apiKey, '');
 const getHistoricalTrades = async (req, res) => {
   const crypto = req.params.crypto;
   try {
-    const response = await client.historicalTrades(crypto);
+    const response = await client.historicalTrades(crypto, {limit: 5});
     res.status(200).json({ response: response.data });
   } catch (err) {
     res.status(500).json({ error: err.messsage });
