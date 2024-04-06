@@ -16,15 +16,35 @@ const getHistoricalTrades = async (req, res) => {
   }
 }
 
-// const getHistoricalTrades = async (req, res) => {
-//   const crypto = req.params.crypto;
-//   try {
-//     const response = await client.historicalTrades(crypto);
-//     res.status(200).json({ response: response.data });
-//   } catch (err) {
-//     res.status(500).json({ error: error.messsage });
-//   }
-// }
+const getAggTrades = async (req, res) => {
+  const crypto = req.params.crypto;
+  try {
+    const response = await client.aggTrades(crypto);
+    res.status(200).json({ response: response.data });
+  } catch (err) {
+    res.status(500).json({ error: error.messsage });
+  }
+}
+
+const getAvgPrice = async (req, res) => {
+  const crypto = req.params.crypto;
+  try {
+    const response = await client.avgPrice(crypto);
+    res.status(200).json({ response: response.data });
+  } catch (err) {
+    res.status(500).json({ error: error.messsage });
+  }
+}
+
+const getExchangeInfo = async (req, res) => {
+  const crypto = req.params.crypto;
+  try {
+    const response = await client.historicalTrades(crypto);
+    res.status(200).json({ response: response.data });
+  } catch (err) {
+    res.status(500).json({ error: error.messsage });
+  }
+}
 
 const websocketConnect = async (req, res) => {
   const currency = req.params.currency;
@@ -45,4 +65,7 @@ const websocketConnect = async (req, res) => {
 module.exports = {
   websocketConnect,
   getHistoricalTrades,
+  getAggTrades,
+  getAvgPrice,
+  getExchangeInfo,
 }
